@@ -1,0 +1,39 @@
+<ROSETTASCRIPTS>
+    <SCOREFXNS>
+        <ScoreFunction name="Score_Function" weights="talaris2014" />
+    </SCOREFXNS>
+    <TASKOPERATIONS>
+        <ProteinInterfaceDesign name="InterfaceDesign" repack_chain1="1" repack_chain2="1" design_chain1="0" design_chain2="1" interface_distance_cutoff="8.0" />
+        <ExtraRotamersGeneric name="Rotamers" ex1="1" ex2="1" ex1aro="1" ex2aro="1" />
+	<ReadResfile name="selec_mutations" filename="resfile.dat" />
+	<OperateOnCertainResidues name="hotspot_repack">
+                <RestrictToRepackingRLT/>
+                <ResiduePDBInfoHasLabel property="HOTSPOT"/>
+        </OperateOnCertainResidues>
+    </TASKOPERATIONS>
+    <FILTERS>
+        <Ddg name="ddg" confidence="0.0" />
+        <BuriedUnsatHbonds name="unsat" confidence="0.0"/>
+        <ShapeComplementarity name="Sc" confidence="0.0"/>
+    </FILTERS>
+    <MOVERS>
+	<Prepack name="Prepack" scorefxn="Score_Function" jump_number="0" task_operations="Rotamers" min_bb="0" />
+        <DockingProtocol  name="Dock" partners="A_B" dock_min="1" docking_score_high="Score_Function" low_res_protocol_only="0" docking_local_refine="1" task_operations="Rotamers" />
+        <PackRotamersMover name="Design_Motif" scorefxn="Score_Function" task_operations="hotspot_repack,Rotamers,selec_mutations" />
+        <PackRotamersMover name="Design" scorefxn="Score_Function" task_operations="InterfaceDesign,hotspot_repack,Rotamers" />
+        <MinMover name="Minimization" chi="1" bb="1" jump="0" tolerance="0.0001" max_iter="2000" scorefxn="Score_Function" />
+        <Backrub name="Backrub" />
+    </MOVERS>
+    <PROTOCOLS>
+        <Add mover="Backrub" />
+        <Add mover="Prepack" />
+        <Add mover="Dock" />
+        <Add mover="Design" />
+        <Add mover="Design_Motif" />
+        <Add mover="Minimization" />
+        <Add filter="ddg" />
+        <Add filter="unsat"/>
+        <Add filter="Sc"/>
+    </PROTOCOLS>
+    <OUTPUT scorefxn="Score_Function" />
+</ROSETTASCRIPTS>

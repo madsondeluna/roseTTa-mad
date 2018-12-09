@@ -1,0 +1,33 @@
+<ROSETTASCRIPTS>
+    <SCOREFXNS>
+        <Score_Function weights="talaris2014" />
+    </SCOREFXNS>
+    <TASKOPERATIONS>
+        <ProteinInterfaceDesign name="DesignInterface" repack_chain1=1 repack_chain2=1 design_chain1=0 design_chain2=1 interface_distance_cutoff=8.0 />
+        <ExtraRotamersGeneric name="Rotamers" ex1=1 ex2=1 ex2aro=1 />
+    </TASKOPERATIONS>
+    <FILTERS>
+        <Ddg name="ddg" confidence=0.0 />
+        <BuriedUnsatHbonds name=unsat confidence=0/>
+    </FILTERS>
+    <MOVERS>
+	<build_Ala_pose name=ala_pose partner1=0 partner2=1 interface_cutoff_distance=8.0 />
+        <DockingProtocol  name="Dock" dock_min=1 partners="A_B" docking_score_high="Score_Function"  docking_local_refine=0 task_operations="Rotamers" />
+        <PackRotamersMover name="Design" scorefxn="Score_Function" task_operations="DesignInterface,Rotamers" />
+        <MinMover name="Minimization" chi=1 bb=1 jump=0 tolerance=0.001 max_iter=200 scorefxn="Score_Function" />
+        <Backrub name="Backrub" />
+	<Prepack name="Ppk" jump_number=1 />
+    </MOVERS>
+    <PROTOCOLS>
+	<Add mover_name=ala_pose/>
+        <Add mover="Backrub" />
+	<Add mover="Ppk" />
+        <Add mover="Dock" />
+        <Add mover="Design" />
+        <Add mover="Minimization" />
+        <Add filter="ddg" />
+        <Add filter="unsat" />
+    </PROTOCOLS>
+    <OUTPUT scorefxn="Score_Function" />
+</ROSETTASCRIPTS>
+~                 

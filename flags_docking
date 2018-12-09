@@ -1,0 +1,18 @@
+#docking
+-partners HL_C
+-randomize1                           # randomize the orientation of the first docking parter
+-randomize2                           # randomize the orientation of the second docking parter 
+-spin                                 # spin a second dockin partner around axes from centre of mass of the first partner to second partner
+-dock_pert 3 8                        # randomly perturb the input sctructure using a gaussian for translation and rotation
+-antibody:sc_min
+-nstruct 200                          # number of decoys
+-ex1                                  # extra side-chain rotamers
+-ex2                                  # extra side-chain rotamers
+-ex2aro                               # extra side-chain rotamers
+-in:file:s  D.pdb 
+-constraints:cst_file cstfile-docking                         
+-constraints:cst_weight 10            
+-docking_local_refine
+-overwrite
+-jd2::ntrials 100
+

@@ -1,0 +1,22 @@
+<ROSETTASCRIPTS>
+    <SCOREFXNS>
+        <Score_Function weights="talaris2014" />
+    </SCOREFXNS>	
+    <TASKOPERATIONS>
+    </TASKOPERATIONS>
+    <FILTERS>
+    </FILTERS>
+    <MOVERS>
+        <SavePoseMover name=Fragment reference_name=Epitop pdb_file=Epi_364-375.pdb />
+        <CCDEndsGraftMover name=Insertion spm_reference_name=Epitop start_res_num=24 end_res_num=32 Nter_overhang=0 Cter_overhang=0 scaffold_flex_Nter=2 scaffold_flex_Cter=2 insert_flex_Nter=2 insert_flex_Cter=2 copy_pdbinfo=false />
+        <Backrub name="Backrub" />
+        <MinMover name="Minimization" chi=1 bb=0 jump=0 scorefxn="Score_Function" tolerance=0.001 max_iter=1000 />
+    </MOVERS>
+    <PROTOCOLS>
+        <Add mover="Insertion"/>
+        <Add mover="Backrub" />
+        <Add mover="Minimization" />
+    </PROTOCOLS>
+    <OUTPUT scorefxn="Score_Function" />
+</ROSETTASCRIPTS>
+~                        
