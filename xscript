@@ -1,0 +1,36 @@
+<ROSETTASCRIPTS>
+<RESIDUE_SELECTORS>
+<Index name="residue_select" resnums="139B,140B,141B,142B,145B,146B,147B"/>
+<Not name="donot_residue_select" selector="residue_select"/>
+</RESIDUE_SELECTORS>
+<TASKOPERATIONS>
+<ProteinInterfaceDesign name="pido" design_chain2="0" modify_after_jump="1" />
+<InitializeFromCommandline name="init"/>
+<OperateOnResidueSubset name="repacking" selector="residue_select">
+<RestrictToRepacking>
+</OperateOnResidueSubset>
+<DesignAround name="daround" design_shell="8.0" resnums="139B,140B,141B,142B,145B,146B,147B" repack_shell="8.0" allow_design="1" resnums_allow_design="0"/>
+<ExtraRotamersGenericname="rotamers" ex1="1" ex2="1" ex2aro ="1"/>
+</TASKOPERATIONS>
+<SCOREFXNS>
+</SCOREFXNS>
+<FILTERS>
+</FILTERS>
+<MOVERS>
+MutateResidue name="Mutation1" target="138B" new_res="ALA"/>
+MutateResidue name="Mutation2" target="139B" new_res="ASP"/>
+<FastRelax name="fastrelax" repeats="8" task_operations="pido,init"/>
+<PackRotamersMover name="packrot" task_operations="daround,repacking,rotamers"/>
+<Backrub name="backrub"/>
+<Prepack name="prepacking" task_operations="rotamers"/>
+</MOVERS>
+<PROTOCOLS>
+
+Add mover="Mutation1"/>
+Add mover="Mutation2"/>
+<Add mover_name="fastrelax"/>
+<Add mover_name="packrot"/>
+<Add mover_name="backrub"/>
+<Add mover_name="prepacking/>
+</PROTOCOLS>
+</ROSETTASCRIPTS>
